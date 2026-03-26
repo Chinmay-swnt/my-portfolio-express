@@ -1,18 +1,24 @@
 const express = require("express");
+const path = require("path");
+
 const app = express();
-const port = 3000;
 
-app.use(express.static("public"));
+// Use dynamic port (IMPORTANT for Beanstalk)
+const PORT = process.env.PORT || 3000;
 
-app.get("/", (req,res) => {
-    res.sendFile(__dirname+"/pages/index.html");
+// Serve static files
+app.use(express.static(path.join(__dirname, "public")));
+
+// Routes
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "pages", "index.html"));
 });
 
-app.get("/skills", (req,res) => {
-    res.sendFile(__dirname+"/pages/my_skills.html");
+app.get("/skills", (req, res) => {
+    res.sendFile(path.join(__dirname, "pages", "my_skills.html"));
 });
 
-
-app.listen(port, (err) => {
-    console.log("Server started on http://localhost:"+port);
-})
+// Start server
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
